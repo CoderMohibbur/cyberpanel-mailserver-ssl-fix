@@ -1,0 +1,12 @@
+.DS_Store
+Thumbs.db
+*.log
+*.tmp
+*.swp
+.env
+*.key
+*.pem
+privkey.pem
+fullchain.pem
+cert.pem
+chain.pem
