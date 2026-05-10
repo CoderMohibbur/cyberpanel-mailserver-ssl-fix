@@ -2,6 +2,77 @@
 
 Fixes a common CyberPanel mail SSL issue where SMTP over TLS/SSL fails even though CyberPanel reports that MailServer SSL was renewed or issued.
 
+This repository focuses on a safe CyberPanel MailServer SSL fix workflow for real production troubleshooting. It is useful when teams need a CyberPanel SMTP TLS fix for issues like a CyberPanel Gmail SMTP SSL error, a Postfix Dovecot old certificate, an expired SMTP certificate on port 587 or an expired SMTP certificate on port 465, and cases where Let's Encrypt mail server SSL CyberPanel updates appear complete but Gmail SMTP TLS negotiation failed CyberPanel or Outlook Thunderbird certificate warning CyberPanel issues still continue.
+
+## One-line usage
+Replace `mail.example.com` with your real SMTP hostname.
+
+### Check only - recommended first
+```bash
+curl -fsSL https://raw.githubusercontent.com/CoderMohibbur/cyberpanel-mailserver-ssl-fix/master/scripts/cyberpanel-mail-ssl-fix.sh | sudo bash -s -- --host mail.example.com
+```
+
+### Apply the safe fix
+```bash
+curl -fsSL https://raw.githubusercontent.com/CoderMohibbur/cyberpanel-mailserver-ssl-fix/master/scripts/cyberpanel-mail-ssl-fix.sh | sudo bash -s -- --host mail.example.com --fix
+```
+
+### With wget fallback
+```bash
+(curl -fsSL https://raw.githubusercontent.com/CoderMohibbur/cyberpanel-mailserver-ssl-fix/master/scripts/cyberpanel-mail-ssl-fix.sh || wget -qO- https://raw.githubusercontent.com/CoderMohibbur/cyberpanel-mailserver-ssl-fix/master/scripts/cyberpanel-mail-ssl-fix.sh) | sudo bash -s -- --host mail.example.com
+```
+
+Fix mode with fallback:
+```bash
+(curl -fsSL https://raw.githubusercontent.com/CoderMohibbur/cyberpanel-mailserver-ssl-fix/master/scripts/cyberpanel-mail-ssl-fix.sh || wget -qO- https://raw.githubusercontent.com/CoderMohibbur/cyberpanel-mailserver-ssl-fix/master/scripts/cyberpanel-mail-ssl-fix.sh) | sudo bash -s -- --host mail.example.com --fix
+```
+
+The script is check-only by default. It does not change anything unless `--fix` is passed.
+
+Note: if your repository uses a different default branch, replace `master` with your branch name.
+
+## Inspect before running
+```bash
+curl -fsSL https://raw.githubusercontent.com/CoderMohibbur/cyberpanel-mailserver-ssl-fix/master/scripts/cyberpanel-mail-ssl-fix.sh | less
+```
+
+or:
+
+```bash
+curl -fsSL -o cyberpanel-mail-ssl-fix.sh https://raw.githubusercontent.com/CoderMohibbur/cyberpanel-mailserver-ssl-fix/master/scripts/cyberpanel-mail-ssl-fix.sh
+less cyberpanel-mail-ssl-fix.sh
+sudo bash cyberpanel-mail-ssl-fix.sh --host mail.example.com
+```
+
+Use `bash` for this project, not `sh`, because the helper script is written for Bash features and safety checks.
+
+## Optional install
+Install the command:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/CoderMohibbur/cyberpanel-mailserver-ssl-fix/master/install.sh | sudo bash
+```
+
+With wget fallback:
+
+```bash
+(curl -fsSL https://raw.githubusercontent.com/CoderMohibbur/cyberpanel-mailserver-ssl-fix/master/install.sh || wget -qO- https://raw.githubusercontent.com/CoderMohibbur/cyberpanel-mailserver-ssl-fix/master/install.sh) | sudo bash
+```
+
+Then run:
+
+```bash
+sudo cyberpanel-mailserver-ssl-fix --host mail.example.com
+sudo cyberpanel-mailserver-ssl-fix --host mail.example.com --fix
+```
+
+Uninstall:
+
+```bash
+sudo cyberpanel-mailserver-ssl-fix --help
+curl -fsSL https://raw.githubusercontent.com/CoderMohibbur/cyberpanel-mailserver-ssl-fix/master/install.sh | sudo bash -s -- --uninstall
+```
+
 ## Why this repository exists
 In some CyberPanel environments, the Let's Encrypt certificate files are renewed on disk, but Postfix and Dovecot continue serving an older certificate for SMTP clients. This can cause Gmail, Outlook, and Thunderbird to reject or warn on TLS/SSL connections.
 
@@ -105,6 +176,15 @@ X509v3 Subject Alternative Name:
     DNS:mail.example.com
 ```
 
+## Release pinning note
+For production use, you can pin commands to a release tag after publishing a release, for example:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/CoderMohibbur/cyberpanel-mailserver-ssl-fix/v1.0.0/scripts/cyberpanel-mail-ssl-fix.sh | sudo bash -s -- --host mail.example.com
+```
+
+Do not use the `v1.0.0` command as the main command unless the tag already exists.
+
 ## Repository structure
 ```text
 README.md
@@ -112,7 +192,9 @@ LICENSE
 SECURITY.md
 CONTRIBUTING.md
 CHANGELOG.md
+.gitattributes
 .gitignore
+install.sh
 scripts/cyberpanel-mail-ssl-fix.sh
 docs/examples.md
 docs/case-study.md

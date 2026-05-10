@@ -1,12 +1,39 @@
 # Examples
 
-## Check-only mode (default)
+## Direct one-line check-only command
 ```bash
-sudo bash scripts/cyberpanel-mail-ssl-fix.sh --host mail.example.com
+curl -fsSL https://raw.githubusercontent.com/CoderMohibbur/cyberpanel-mailserver-ssl-fix/master/scripts/cyberpanel-mail-ssl-fix.sh | sudo bash -s -- --host mail.example.com
 ```
 
-## Apply safe fix mode
+## Direct one-line safe fix command
 ```bash
+curl -fsSL https://raw.githubusercontent.com/CoderMohibbur/cyberpanel-mailserver-ssl-fix/master/scripts/cyberpanel-mail-ssl-fix.sh | sudo bash -s -- --host mail.example.com --fix
+```
+
+## Wget fallback command
+```bash
+(curl -fsSL https://raw.githubusercontent.com/CoderMohibbur/cyberpanel-mailserver-ssl-fix/master/scripts/cyberpanel-mail-ssl-fix.sh || wget -qO- https://raw.githubusercontent.com/CoderMohibbur/cyberpanel-mailserver-ssl-fix/master/scripts/cyberpanel-mail-ssl-fix.sh) | sudo bash -s -- --host mail.example.com
+```
+
+## Optional install command
+```bash
+curl -fsSL https://raw.githubusercontent.com/CoderMohibbur/cyberpanel-mailserver-ssl-fix/master/install.sh | sudo bash
+```
+
+## Installed command usage
+```bash
+sudo cyberpanel-mailserver-ssl-fix --host mail.example.com
+sudo cyberpanel-mailserver-ssl-fix --host mail.example.com --fix
+```
+
+## Inspect-before-run option
+```bash
+curl -fsSL https://raw.githubusercontent.com/CoderMohibbur/cyberpanel-mailserver-ssl-fix/master/scripts/cyberpanel-mail-ssl-fix.sh | less
+```
+
+## Manual local script usage
+```bash
+sudo bash scripts/cyberpanel-mail-ssl-fix.sh --host mail.example.com
 sudo bash scripts/cyberpanel-mail-ssl-fix.sh --host mail.example.com --fix
 ```
 
@@ -33,6 +60,7 @@ sudo systemctl restart postfix
 sudo systemctl restart dovecot
 ```
 
-## Notes
-- Keep all shared logs sanitized.
-- Do not post real domains, private keys, mailbox passwords, or customer-specific data.
+## Why `bash` instead of `sh`
+This project ships a Bash script and uses Bash-specific behavior and safety checks. Use `bash` (or `sudo bash`) instead of `sh` for reliable execution.
+
+Note: if your repository uses a different default branch, replace `master` with your branch name.

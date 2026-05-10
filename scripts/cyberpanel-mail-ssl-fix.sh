@@ -120,8 +120,11 @@ fi
 if [[ "$DO_FIX" -eq 0 ]]; then
   log ""
   log "Check-only mode complete."
-  log "To apply the safe fix, run:"
+  log "To apply the safe fix, re-run this helper with --fix."
+  log ""
+  log "Examples:"
   log "  sudo bash scripts/cyberpanel-mail-ssl-fix.sh --host $HOST --fix"
+  log "  sudo cyberpanel-mailserver-ssl-fix --host $HOST --fix"
   if [[ "$MAP_PATH" != "/etc/postfix/vmail_ssl.map" ]]; then
     log "  (custom map path currently set with --map '$MAP_PATH')"
   fi
